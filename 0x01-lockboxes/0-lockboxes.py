@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Script to unlock list of lists"""
 
+
 def canUnlockAll(boxes):
     """This function will take a list of lists and unlock
     content
