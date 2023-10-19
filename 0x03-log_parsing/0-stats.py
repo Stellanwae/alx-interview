@@ -32,7 +32,7 @@ try:
             pass
 
         try:
-            if stlist[-2] in sts:
+            if stlist[-2] in cache:
                 cache[stlist[-2]] += 1
         except:
             pass
@@ -40,5 +40,5 @@ try:
 
 
 except KeyboardInterrupt:
-    printstats(sts, size)
+    printstats(cache, size)
     raise
