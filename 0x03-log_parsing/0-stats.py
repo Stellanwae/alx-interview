@@ -3,41 +3,42 @@
 
 import sys
 
-def printstatus(dictionary, size):
-    """ to print information"""
-    print("File size: {:d}".format(size))
-    for i in sorted(dictionary.keys()):
-        if dictionary[i] != 0:
-            print("{}: {:d}".format(i, dictionary[i]))
 
+if __name__ == '__main__':
 
-status = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-       "404": 0, "405": 0, "500": 0}
+    filesize = 0
+    count = 0
+    status_codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    stats = {k: 0 for k in status_codes}
 
-count = 0
-size = 0
+    def print_status(stats: dict, file_size: int) -> None:
+        print("File size: {:d}".format(filesize))
+        for k, v in sorted(stats.items()):
+            if v:
+                print("{}: {}".format(k, v))
 
-try:
-    for line in sys.stdin:
-        if count != 0 and count % 10 == 0:
-            printstatus(status, size)
-
-        stlist = line.split()
-        count += 1
-
-        try:
-            size += int(stlist[-1])
-        except:
-            pass
-
-        try:
-            if stlist[-2] in status:
-                status[stlist[-2]] += 1
-        except:
-            pass
-    printstatus(status, size)
+    try:
+        for line in sys.stdin:
+            count += 1
+            data = line.split()
+            try:
+                status_code = data[-2]
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                pass
+            try:
+                filesize += int(data[-1])
+            except BaseException:
+                pass
+            if count % 10 == 0:
+                print_status(stats, filesize)
+        print_status(stats, filesize)
+    except KeyboardInterrupt:
+        print_status(stats, filesize)
+        raise
 
 
 except KeyboardInterrupt:
-    printstatus(status, size)
+    print_status(status, size)
     raise
