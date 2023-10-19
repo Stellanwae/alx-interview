@@ -4,6 +4,9 @@
 
 import sys
 
+sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+       "404": 0, "405": 0, "500": 0}
+
 def printstats(dic, size):
     """ print info"""
     print("File size: {:d}".format(size))
@@ -11,9 +14,6 @@ def printstats(dic, size):
         if dic[i] != 0:
             print("{}: {:d}".format(i, dic[i]))
 
-
-sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-       "404": 0, "405": 0, "500": 0}
 
 count = 0
 size = 0
