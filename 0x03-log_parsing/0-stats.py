@@ -1,44 +1,40 @@
 #!/usr/bin/python3
-"""Script that reads stdin line by line and computes metrics"""
+'''Script that reads stdin and computes metrics'''
 
 import sys
 
-
-if __name__ == '__main__':
-
-    filesize = 0
-    count = 0
-    status_codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
-    stats = {k: 0 for k in status_codes}
-
-    def print_status(stats: dict, file_size: int) -> None:
-        print("File size: {:d}".format(filesize))
-        for k, v in sorted(stats.items()):
-            if v:
-                print("{}: {}".format(k, v))
+def main():
+    status = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
+    total_size = 0
+    counter = 0
 
     try:
         for line in sys.stdin:
-            count += 1
-            data = line.split()
-            try:
-                status_code = data[-2]
-                if status_code in stats:
-                    stats[status_code] += 1
-            except BaseException:
-                pass
-            try:
-                filesize += int(data[-1])
-            except BaseException:
-                pass
-            if count % 10 == 0:
-                print_status(stats, filesize)
-        print_status(stats, filesize)
+            line_list = line.split(" ")
+            if len(line_list) > 4:
+                code = line_list[-2]
+                size = int(line_list[-1])
+                if code in status:
+                    status[code] += 1
+                total_size += size
+                counter += 1
+
+            if counter == 10:
+                counter = 0
+                print('File size: {}'.format(total_size))
+                for key, value in sorted(status.items()):
+                    if value != 0:
+                        print('{}: {}'.format(key, value))
+
     except KeyboardInterrupt:
-        print_status(stats, filesize)
-        raise
+        pass
+    except Exception as err:
+        print("An error occurred:", err)
+    finally:
+        print('File size: {}'.format(total_size))
+        for key, value in sorted(status.items()):
+            if value != 0:
+                print('{}: {}'.format(key, value))
 
-
-except KeyboardInterrupt:
-    print_status(status, size)
-    raise
+if __name__ == "__main__":
+    main()
