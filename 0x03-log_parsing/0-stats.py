@@ -1,44 +1,40 @@
 #!/usr/bin/python3
-"""Script that stin but is interupted by keyboard input"""
-
+'''Script that reads stdin and computes metrics'''
 
 import sys
 
-cache = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-       "404": 0, "405": 0, "500": 0}
+def main():
+    status = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
+    total = 0
+    counter = 0
 
-def printstats(dic, size):
-    """ print info"""
-    print("File size: {:d}".format(size))
-    for i in sorted(dic.keys()):
-        if dic[i] != 0:
-            print("{}: {:d}".format(i, dic[i]))
+    try:
+        for line in sys.stdin:
+            line_list = line.split(" ")
+            if len(line_list) > 4:
+                code = line_list[-2]
+                size = int(line_list[-1])
+                if code in status:
+                    status[code] += 1
+                total += size
+                counter += 1
 
+            if counter == 10:
+                counter = 0
+                print('File size: {}'.format(total))
+                for key, value in sorted(status.items()):
+                    if value != 0:
+                        print('{}: {}'.format(key, value))
 
-count = 0
-size = 0
+    except KeyboardInterrupt:
+        pass
+    except Exception as err:
+        print("An error occurred:", err)
+    finally:
+        print('File size: {}'.format(total))
+        for key, value in sorted(status.items()):
+            if value != 0:
+                print('{}: {}'.format(key, value))
 
-try:
-    for line in sys.stdin:
-        if count != 0 and count % 10 == 0:
-            printstats(cache, size)
-
-        stlist = line.split()
-        count += 1
-
-        try:
-            size += int(stlist[-1])
-        except:
-            pass
-
-        try:
-            if stlist[-2] in cache:
-                cache[stlist[-2]] += 1
-        except:
-            pass
-    printstats(cache, size)
-
-
-except KeyboardInterrupt:
-    printstats(cache, size)
-    raise
+if __name__ == "__main__":
+    main()
