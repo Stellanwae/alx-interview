@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Function that rotates matrix by to deg"""
+"""Func rotates matrix to 90 deg"""
 
 
 def rotate_2d_matrix(matrix):
