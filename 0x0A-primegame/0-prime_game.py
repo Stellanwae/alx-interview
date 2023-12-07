@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+
+""" Find prime numbers """
+
+
 def find_prime_numbers(n):
     """Return list of prime numbers 
     """
