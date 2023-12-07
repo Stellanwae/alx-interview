@@ -1,14 +1,14 @@
-def primeNumbers(n):
+def find_prime_numbers(n):
     """Return list of prime numbers 
     """
-    primeNos = []
+    prime_numbers = []
     filtered = [True] * (n + 1)
     for prime in range(2, n + 1):
         if (filtered[prime]):
-            primeNos.append(prime)
+            prime_numbers.append(prime)
             for i in range(prime, n + 1, prime):
                 filtered[i] = False
-    return primeNos
+    return prime_numbers
 
 
 def isWinner(x, nums):
@@ -19,8 +19,8 @@ def isWinner(x, nums):
         return None
     Maria = Ben = 0
     for i in range(x):
-        primeNos = primeNumbers(nums[i])
-        if len(primeNos) % 2 == 0:
+        prime_numbers = find_prime_numbers(nums[i])
+        if len(prime_numbers) % 2 == 0:
             Ben += 1
         else:
             Maria += 1
